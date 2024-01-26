@@ -21,11 +21,13 @@ rm -rf ${WorkingDir}/downloads.curl
 rm -rf ${WorkingDir}/debug_downloads.curl
 rm -rf ${WorkingDir}/data.zip
 rm -rf ${WorkingDir}/errors.txt
+rm -rf ${WorkingDir}/iati-data-main
 
 # Make sure dirs exist
 mkdir -p ${WorkingDir}
 mkdir -p ${WorkingDir}/urls
 mkdir -p ${WorkingDir}/logs
+mkdir -p ${WorkingDir}/iati-data-main
 
 # Get URLs
 echo "Get URLs ...."
@@ -57,7 +59,14 @@ echo "{\"created_at\": \"${StartTime}\", \"updated_at\": \"${EndTime}\"}" > meta
 
 # Make Zip
 echo "Zip ...."
-zip -r data.zip metadata data metadata.json errors.txt
+# Move these ones, as they are big
+mv data iati-data-main/data
+mv metadata iati-data-main/metadata
+# copy these ones, as they are small and we want the original files left as output for other processes to pick up
+cp errors.txt iati-data-main/errors.txt
+cp metadata.json iati-data-main/metadata.json
+# now zip
+zip -r data.zip iati-data-main/metadata iati-data-main/data iati-data-main/metadata.json iati-data-main/errors.txt
 
 # Finished
 echo "Finished!"
