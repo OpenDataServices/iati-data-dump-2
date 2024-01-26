@@ -2,7 +2,7 @@ import sys
 import shutil
 import json
 from os.path import dirname, exists, join
-from os import makedirs
+from os import makedirs, getenv, chdir
 from time import sleep
 
 import requests
@@ -98,4 +98,7 @@ def main(args):
 
 
 if __name__ == '__main__':
+    working_dir = getenv('GRAB_URLS_WORKING_DIR')
+    if working_dir:
+        chdir(working_dir)
     main(sys.argv[1:])
