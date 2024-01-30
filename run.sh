@@ -66,7 +66,7 @@ mv metadata iati-data-main/metadata
 cp errors.txt iati-data-main/errors.txt
 cp metadata.json iati-data-main/metadata.json
 # now zip
-zip -r data.zip iati-data-main/metadata iati-data-main/data iati-data-main/metadata.json iati-data-main/errors.txt
+zip -q -r data.zip iati-data-main/metadata iati-data-main/data iati-data-main/metadata.json iati-data-main/errors.txt
 
 # Finished
 echo "Finished!"
