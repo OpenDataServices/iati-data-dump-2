@@ -43,7 +43,7 @@ then
     head -n 100 downloads.curl > debug_downloads.curl
     (cat debug_downloads.curl | sort -R | parallel -j2) || true
 else
-    (cat downloads.curl | sort -R | parallel -j100) || true
+    (cat downloads.curl | sort -R | parallel -j20) || true
 fi
 
 # Errors
