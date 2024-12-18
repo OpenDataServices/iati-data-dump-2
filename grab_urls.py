@@ -7,7 +7,9 @@ from time import sleep
 
 import requests
 
-
+requests_headers = {
+    'User-Agent': 'Open Data Services IATI Data Dump 2 https://github.com/OpenDataServices/iati-data-dump-2',
+}
 
 def main(args):
     cache = '--cache' in args
@@ -31,10 +33,10 @@ def main(args):
            'data/{publisher_id}/{dataset_name}.xml\n'
 
     datasets = requests.get(
-        "https://registry.codeforiati.org/dataset_list.json").json()["result"]
+        "https://registry.codeforiati.org/dataset_list.json", headers=requests_headers).json()["result"]
 
     publishers = requests.get(
-        "https://registry.codeforiati.org/publisher_list.json").json()["result"]
+        "https://registry.codeforiati.org/publisher_list.json", headers=requests_headers).json()["result"]
     publishers = {
         publisher["name"]: publisher
         for publisher in publishers
