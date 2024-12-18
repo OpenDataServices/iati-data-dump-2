@@ -8,21 +8,6 @@ from time import sleep
 import requests
 
 
-def request_with_backoff(*args, attempts=100, backoff=0.1, **kwargs):
-    for attempt in range(1, attempts + 1):
-        # exponential backoff
-        wait = (pow(2, attempt) - 1) * backoff
-        try:
-            result = requests.request(*args, **kwargs)
-            if result.status_code == 200:
-                sleep(wait)
-                return result
-        except requests.exceptions.ConnectionError:
-            pass
-        print(f'Error! Retrying after {wait} seconds')
-        sleep(wait)
-    raise Exception(f'Failed after {attempts} attempts. Giving up.')
-
 
 def main(args):
     cache = '--cache' in args
