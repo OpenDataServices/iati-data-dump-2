@@ -7,22 +7,9 @@ from time import sleep
 
 import requests
 
-
-def request_with_backoff(*args, attempts=100, backoff=0.1, **kwargs):
-    for attempt in range(1, attempts + 1):
-        # exponential backoff
-        wait = (pow(2, attempt) - 1) * backoff
-        try:
-            result = requests.request(*args, **kwargs)
-            if result.status_code == 200:
-                sleep(wait)
-                return result
-        except requests.exceptions.ConnectionError:
-            pass
-        print(f'Error! Retrying after {wait} seconds')
-        sleep(wait)
-    raise Exception(f'Failed after {attempts} attempts. Giving up.')
-
+requests_headers = {
+    'User-Agent': 'Open Data Services IATI Data Dump 2 https://github.com/OpenDataServices/iati-data-dump-2',
+}
 
 def main(args):
     cache = '--cache' in args
@@ -46,10 +33,10 @@ def main(args):
            'data/{publisher_id}/{dataset_name}.xml\n'
 
     datasets = requests.get(
-        "https://registry.codeforiati.org/dataset_list.json").json()["result"]
+        "https://registry.codeforiati.org/dataset_list.json", headers=requests_headers).json()["result"]
 
     publishers = requests.get(
-        "https://registry.codeforiati.org/publisher_list.json").json()["result"]
+        "https://registry.codeforiati.org/publisher_list.json", headers=requests_headers).json()["result"]
     publishers = {
         publisher["name"]: publisher
         for publisher in publishers
